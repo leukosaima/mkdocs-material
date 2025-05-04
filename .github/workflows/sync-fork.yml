@@ -11,6 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - run: gh repo sync leukosaima/mkdocs-material -b master
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          
+      - name: Setup upstream
+        run: |
+          git remote -v
+          git remote add upstream https://github.com/squidfunk/mkdocs-material.git || git remote set-url upstream https://github.com/squidfunk/mkdocs-material.git
+          git remote -v
+          
+      - name: Fetch upstream
+        run: git fetch upstream master
+        
+      - name: Merge upstream
+        run: |
+          git checkout master
+          git merge --ff-only upstream/master || git merge --no-ff upstream/master
+          git push origin master
