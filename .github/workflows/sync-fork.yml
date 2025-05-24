@@ -34,11 +34,26 @@ jobs:
         run: |
           git checkout master
           git pull origin master
-          git merge upstream/master --no-ff -m "Merge upstream changes" || exit 1
+          # Check if there are any changes between upstream and local master
+          if git diff --quiet upstream/master master; then
+            echo "No changes to merge"
+            exit 0
+          fi
+          # Attempt to merge upstream changes, preserving history with --no-ff
+          if ! git merge upstream/master --no-ff -m "Merge upstream changes"; then
+            echo "Merge failed due to conflicts"
+            # Show the status of the failed merge
+            git status
+            # Abort the merge to leave the branch in a clean state
+            git merge --abort
+            echo "Merge aborted. Please resolve conflicts manually."
+            exit 1
+          fi
           # Only push if merge was successful
           git push origin master
           
       - name: Trigger workflows
+        if: success()
         uses: actions/github-script@v7
         with:
           script: |
