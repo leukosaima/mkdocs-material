@@ -11,62 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-          
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-      - name: Setup upstream
-        run: |
-          git remote -v
-          git remote add upstream https://github.com/squidfunk/mkdocs-material.git || git remote set-url upstream https://github.com/squidfunk/mkdocs-material.git
-          git remote -v
-          
-      - name: Fetch upstream
-        run: git fetch upstream master
-        
-      - name: Merge upstream
-        run: |
-          git checkout master
-          git pull origin master
-          # Check if there are any changes between upstream and local master
-          if git diff --quiet upstream/master master; then
-            echo "No changes to merge"
-            exit 0
-          fi
-          # Attempt to merge upstream changes, preserving history with --no-ff
-          if ! git merge upstream/master --no-ff -m "Merge upstream changes"; then
-            echo "Merge failed due to conflicts"
-            # Show the status of the failed merge
-            git status
-            # Abort the merge to leave the branch in a clean state
-            git merge --abort
-            echo "Merge aborted. Please resolve conflicts manually."
-            exit 1
-          fi
-          # Only push if merge was successful
-          git push origin master
-          
-      - name: Trigger workflows
-        if: success()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'build.yml',
-              ref: 'master'
-            });
-            
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'documentation.yml',
-              ref: 'master'
-            });
+      - run: gh repo sync leukosaima/mkdocs-material -b master
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
