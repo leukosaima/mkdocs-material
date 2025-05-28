@@ -1,9 +1,9 @@
 name: Sync Fork
 
 on: 
-  schedule: 
+  #schedule: 
     # Daily at 8:20 UTC
-    - cron: '20 8 * * *'
+  #  - cron: '20 8 * * *'
   workflow_dispatch: {}
     
 jobs:
