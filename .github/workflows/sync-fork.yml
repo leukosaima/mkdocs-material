@@ -15,8 +15,8 @@ jobs:
         id: sync
         run: |
           OUTPUT=$(gh repo sync leukosaima/mkdocs-material -b master)
-          echo "$OUTPUT"
-          if [[ "$OUTPUT" != *"already up to date"* ]]; then
+          echo "OUTPUT=[$OUTPUT]"
+          if [ -n "$OUTPUT" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
