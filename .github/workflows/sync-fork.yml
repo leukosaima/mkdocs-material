@@ -22,7 +22,7 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MKDOCS_TOKEN }}
 
       - name: Trigger workflows
         if: steps.sync.outputs.changed == 'true'
