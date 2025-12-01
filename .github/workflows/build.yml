@@ -43,7 +43,7 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node.js runtime
         uses: actions/setup-node@v6
@@ -71,7 +71,7 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node.js runtime
         uses: actions/setup-node@v6
@@ -100,7 +100,7 @@ jobs:
   #   steps:
 
   #     - name: Checkout repository
-  #       uses: actions/checkout@v5
+  #       uses: actions/checkout@v6
 
   #     - name: Set up Python runtime
   #       uses: actions/setup-python@v6
@@ -125,7 +125,7 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
